@@ -1,0 +1,39 @@
+---
+title: "hw01-yowsean-li"
+author: "Yowsean Li"
+date: "9/14/2017"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+# load data file
+load("data/nba2017-salary-points.RData")
+ls()
+```
+
+# 1. Data Preprocessing
+```{r}
+salary_millions = salary / 1000000
+```
+```{r}
+experience <- as.numeric(replace(experience, experience=="R", 0))
+```
+```{r}
+position_fac <- factor(position)
+levels(position_fac) <- c('center', 'power_fwd', 'point_guard', 'small_fwd', 'shoot_guard')
+```
+```{r}
+table(position_fac)
+```
+
+# 2. Scatterplot of Points and Salary
+```{r}
+plot(points, salary_millions, xlab='Points', ylab='Salary (in millions)')
+```
+
+# 3. Correlation between Points and Salary
+```{r}
