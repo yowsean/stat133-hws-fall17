@@ -1,0 +1,59 @@
+warmup1
+================
+Yowsean Li
+9/9/2017
+
+Cooking Recipe - Chocolate Cake
+-------------------------------
+
+![cake](http://cdn.pinchofyum.com/wp-content/uploads/Chocolate-Cake-5-1-Yoast.jpg)
+
+> [*Source*](http://allrecipes.com/recipe/17981/one-bowl-chocolate-cake-iii/)
+
+#### **Ingredients**
+
+-   2 cups white sugar
+-   1 3/4 cups all-purpose flour
+-   3/4 cup unsweetened cocoa powder
+-   1 1/2 teaspoons baking powder
+-   1 1/2 teaspoons baking soda
+-   1 teaspoon salt
+-   2 eggs
+-   1 cup milk
+-   1/2 cup vegetable oil
+-   2 teaspoons vanilla extract
+-   1 cup boiling water
+
+#### **Tools**
+
+-   2 9" pans
+-   Large bowl
+-   Oven
+-   Mixer
+
+#### **Directions**
+
+1.  Preheat oven to 350 degrees F (175 degrees C). Grease and flour two nine inch round pans.
+2.  In a large bowl, stir together the sugar, flour, cocoa, baking powder, baking soda and salt. Add the eggs, milk, oil and vanilla, mix for 2 minutes on medium speed of mixer. Stir in the boiling water last. Batter will be thin. Pour evenly into the prepared pans.
+3.  Bake 30 to 35 minutes in the preheated oven, until the cake tests done with a toothpick. Cool in the pans for 10 minutes, then remove to a wire rack to cool completely.
+
+======
+
+Quadratic Equation
+------------------
+
+$x = \\frac{-b\\pm\\sqrt{b^2-4ac}}{2a}$
+
+> Used to solve for the roots of a quadratic equation.
+
+======
+
+Comments and Reflections
+------------------------
+
+-   The hardest part was figuring out the format for latex.
+-   Most of the markdown was generally easy.
+-   This was the first time I used markdown and it seems very straightforward.
+-   I did not need help for the assignment
+-   I spent around 20-30 minutes
+-   The most time consuming part was writing out the recipe.

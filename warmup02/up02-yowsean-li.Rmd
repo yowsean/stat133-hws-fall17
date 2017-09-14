@@ -1,0 +1,72 @@
+---
+title: "warmup2"
+author: "Yowsean Li"
+date: "9/11/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+load("nba2017-salary-points.RData")
+ls()
+```
+
+
+###Quantitative Variable - Points
+
+```{r}
+summary(points)
+sd(points)
+```
+
+* Mean: 546.6
+* Standard Deviation: 489.0
+* Minimum: 0.0
+* Maximum: 2558.0
+* Median: 432.0
+* 1st Quartile: 156.0
+* 3rd Quartile: 780.0
+
+```{r}
+hist(points)
+```
+
+```{r}
+boxplot(points)
+```
+
+The distribution of points is skewed to the right with a spread from 0 to 2000 points.
+
+
+### Qualitative Variable - position
+```{r}
+factor(position)
+```
+
+```{r}
+table(position)
+```
+
+```{r}
+table(position)/length(position)
+```
+
+We can see that the distribution between positions is very uniform. Each position accounts for around 20% of players.
+
+```{r}
+barplot(table(position)/length(position))
+```
+
+
+### Report
+
+* Hard parts were researching R docs to find the right functions to use.
+* Easier parts were plotting graphs.
+* I didn't encounter any significant errors.
+* I still need to learn how to manipulate graphs and data
+* The most time consuming part was researching the R docs
+* I did not collaborate
+* There were no frustrating issues
