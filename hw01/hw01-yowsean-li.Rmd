@@ -70,23 +70,26 @@ Y <- b_0 + b_1 * X
 summary(Y)
 ```
 
-1.
+Summary:
+
 - Minimum: 1.510
 - 1st Quartile: 2.845
 - Median: 5.206
 - Mean: 6.187
 - 3rd Quartile: 8.184
 - Maximum: 23.298
-2.
-The regression equation is 
+
+The regression equation is:
 ```{r}
 Y_hat <- 1.510 + 0.009 * X
 ```
-3.
+
 The slope coefficient b_1 is the average increase in salary per point starting from the intercept.
-4.
+
 The intercept term b_0 is the minimum salary.
-5.
+
+Predicted Salaries:
+
 - 0 points: 1.510 million
 - 100 points: 2.366 million
 - 500 points: 5.789 million
@@ -122,12 +125,26 @@ plot(experience, salary_millions, xlab='Years of Experience', ylab='Salary (in m
 title('Scatter Plot with lowess smooth')
 lines(lowess(experience, salary_millions))
 ```
+We can see that salary does increase with more experience, but reaches a peak and slowly starts to decrease at 5 years.
+
 ```{r}
 library(scatterplot3d)
 scatterplot3d(points, experience, salary_millions)
 title('3D Scatterplot')
 ```
-```{r}
-boxplot(salary_millions)
-```
+This plot shows us that salary does increase as experience and points increase.
 
+```{r}
+boxplot(salary_millions~position, xlab="Position", ylab="Salary (millions)")
+title('Boxplot of Position and Salary')
+```
+The boxplot shows that salary does not seem to have a strong correlation with position, although centers seem to be paid the most overall.
+
+# 8. Comments and Reflections
+- The hardest parts were figuring out the correct parameters for different functions.
+- The easier parts were converting the equations into code.
+- This was not my first time using Git or Github.
+- I did not need help completing the assignment.
+- It took me a couple hours to finish.
+- There was no particular part that was most time consuming.
+- The most exciting part was drawing the graphs since I could actually visualize the data in different ways.
