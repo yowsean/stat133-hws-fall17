@@ -33,7 +33,101 @@ table(position_fac)
 # 2. Scatterplot of Points and Salary
 ```{r}
 plot(points, salary_millions, xlab='Points', ylab='Salary (in millions)')
+title('Scatter Plot of Points and Salary')
 ```
 
 # 3. Correlation between Points and Salary
 ```{r}
+n <- length(player)
+mean_points <- sum(points) / n
+mean_salary <- sum(salary_millions) / n
+var_points <- sum((points - mean_points)^2) / (n-1)
+var_salary <- sum((salary_millions - mean_salary)^2) / (n-1)
+sd_points <- sqrt(var_points)
+sd_salary <- sqrt(var_salary)
+cov_pts_salary <- sum((points - mean_points)*(salary_millions - mean_salary)) / (n-1)
+cor_pts_salary <- cov_pts_salary / (sd_points * sd_salary)
+
+paste('n:', n)
+paste('mean_points:', mean_points)
+paste('mean_salary:', mean_salary)
+paste('var_points:', var_points)
+paste('var_salary:', var_salary)
+paste('sd_points:', sd_points)
+paste('sd_salary:', sd_salary)
+paste('cov_pts_salary:', cov_pts_salary)
+paste('mean_salary:', mean_salary)
+paste('cor_pts_salary:', cor_pts_salary)
+```
+
+# 4. Simple Linear Regression
+```{r}
+b_1 <- cor_pts_salary * (sd_salary / sd_points)
+b_0 <- mean_salary - b_1 * mean_points
+X <- points
+Y <- b_0 + b_1 * X
+
+summary(Y)
+```
+
+1.
+- Minimum: 1.510
+- 1st Quartile: 2.845
+- Median: 5.206
+- Mean: 6.187
+- 3rd Quartile: 8.184
+- Maximum: 23.298
+2.
+The regression equation is 
+```{r}
+Y_hat <- 1.510 + 0.009 * X
+```
+3.
+The slope coefficient b_1 is the average increase in salary per point starting from the intercept.
+4.
+The intercept term b_0 is the minimum salary.
+5.
+- 0 points: 1.510 million
+- 100 points: 2.366 million
+- 500 points: 5.789 million
+- 1000 points: 10.067 million
+- 2000 points: 18.623 million
+
+# 5. Plotting the Regression Line
+```{r}
+plot(points, salary_millions, xlab='Points', ylab='Salary (in millions)')
+abline(b_0, b_1)
+lines(lowess(points, salary_millions))
+text(2300, 17, labels = 'regression')
+text(2000, 25, labels = 'lowess')
+title('Regression and Lowess Lines')
+```
+
+# 6. Regression Residuals and Coefficient of Determination $R^2$
+```{r}
+residuals <- salary_millions - Y
+summary(residuals)
+```
+```{r}
+RSS <- sum(residuals^2)
+TSS <- sum((salary_millions - mean_salary)^2)
+R2 <- 1 - RSS/TSS
+paste('RSS: ', RSS)
+paste('TSS: ', TSS)
+paste('R2: ', R2)
+```
+# 7. Exploring Position and Experience
+```{r}
+plot(experience, salary_millions, xlab='Years of Experience', ylab='Salary (in millions)')
+title('Scatter Plot with lowess smooth')
+lines(lowess(experience, salary_millions))
+```
+```{r}
+library(scatterplot3d)
+scatterplot3d(points, experience, salary_millions)
+title('3D Scatterplot')
+```
+```{r}
+boxplot(salary_millions)
+```
+
