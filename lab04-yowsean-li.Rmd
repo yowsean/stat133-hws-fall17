@@ -2,10 +2,273 @@
 title: "lab04-yowsean-li"
 author: "Yowsean Li"
 date: "9/21/2017"
-output: github_document
+output: html_document
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+```{r}
+# creating a basic data frame
+my_table1 <- data.frame(
+  col1 = LETTERS[1:5],
+  col2 = seq(from = 10, to = 50, by = 10),
+  col3 = c(TRUE, TRUE, FALSE, TRUE, FALSE)
+)
+
+my_table1
+```
+
+```{r}
+# another way to create a basic data frame
+my_list <- list(
+  col1 = LETTERS[1:5],
+  col2 = seq(from = 10, to = 50, by = 10),
+  col3 = c(TRUE, TRUE, FALSE, TRUE, FALSE)
+)
+
+my_table2 <- data.frame(my_list)
+
+my_table2
+```
+
+```{r}
+# strings as strings (not as factors)
+my_table3 <- data.frame(
+  col1 = LETTERS[1:5],
+  col2 = seq(from = 10, to = 50, by = 10),
+  col3 = c(TRUE, TRUE, FALSE, TRUE, FALSE),
+  stringsAsFactors = FALSE
+)
+
+is.data.frame(my_table3)
+```
+
+## Starting Lineup of GSW
+```{r}
+gsw_starting <- data.frame(
+  Player = c('Thompson', 'Curry', 'Green', 'Durant', 'Pachulia'),
+  Position = c('SG', 'PG', 'PF', 'SF', 'C'),
+  Salary = c(16663575, 12112359, 15330435, 26540100, 2898000),
+  Points = c(1742, 1999, 776, 1555, 426),
+  PPG = c(22.3, 25.3, 10.2, 25.1, 6.1),
+  Rookie = c(FALSE, FALSE, FALSE, FALSE, FALSE),
+  stringsAsFactors = FALSE
+)
+gsw_starting
+```
+```{r}
+str(gsw_starting)
+```
+```{r}
+gsw_list <- list(
+  Player = c('Thompson', 'Curry', 'Green', 'Durant', 'Pachulia'),
+  Position = c('SG', 'PG', 'PF', 'SF', 'C'),
+  Salary = c(16663575, 12112359, 15330435, 26540100, 2898000),
+  Points = c(1742, 1999, 776, 1555, 426),
+  PPG = c(22.3, 25.3, 10.2, 25.1, 6.1),
+  Rookie = c(FALSE, FALSE, FALSE, FALSE, FALSE)
+)
+gsw_starting2 <- data.frame(gsw_list)
+gsw_starting2
+```
+```{r}
+gsw_starting$Position <- as.factor(gsw_starting$Position)
+gsw_starting$Salary <- as.numeric(gsw_starting$Salary)
+gsw_starting$Points <- as.integer(gsw_starting$Points)
+gsw_starting$PPG <- as.numeric(gsw_starting$PPG)
+gsw_starting
+```
+
+```{r}
+binded <- cbind(gsw_list)
+binded
+```
+
+```{r}
+dat <- read.csv('nba2017-players.csv', stringsAsFactors = FALSE)
+dim(dat)
+head(dat)
+str(dat, vec.len = 1)
+summary(dat)
+```
+
+```{r}
+tail(dat)
+```
+### Height < 70 inches
+```{r}
+dat[dat[,'height'] < 70,]
+```
+### Centers
+```{r}
+dat[dat[,'position'] == 'C',c('player','salary')]
+```
+### Durant
+```{r}
+durant <- dat[dat$player == 'Kevin Durant',]
+durant
+```
+### UCLA Players
+```{r}
+ucla <- dat[dat$college == 'University of California, Los Angeles',]
+ucla
+```
+### Rookies
+```{r}
+rookies <- dat[dat$experience == 0,]
+rookies
+```
+### Rookie Centers
+```{r}
+rookie_centers <- dat[dat$experience == 0 & dat$position == 'C',]
+rookie_centers
+```
+
+### Top Players
+```{r}
+top_players <- dat[dat$games > 50 & dat$minutes > 100,]
+top_players
+```
+
+### Height Info
+```{r}
+height_v <- as.vector(dat$height)
+max(height_v)
+min(height_v)
+mean(height_v)
+```
+
+### Tallest Players
+```{r}
+dat[dat$height == max(height_v),1]
+```
+
+### Shortest Players
+```{r}
+dat[dat$height == min(height_v),1]
+```
+
+### Unique Teams
+```{r}
+unique(dat$team)
+```
+### Number of Teams
+```{r}
+length(unique(dat$team))
+```
+### Oldest Player
+```{r}
+dat[dat$age == max(as.vector(dat$age)),1]
+```
+### Median Salary of all Players
+```{r}
+median(dat$salary)
+```
+### Median salary of players with 10+ yrs of experience
+```{r}
+median(dat[dat$experience >= 10,'salary'])
+```
+### Median Salary of SG and PG
+```{r}
+median(dat[dat$position %in% c('SG','PG'), 'salary'])
+```
+### Median Salary of PF, 29 Years or older, 74 inches tall or less
+```{r}
+median(dat[dat$position == 'PF' & dat$age >= 29 & dat$height <= 74, 'salary'])
+```
+### Number of Players who scored 4 pts or less
+```{r}
+length(dat[dat$points <= 4,'player'])
+```
+### Players who scored 4pts or less
+```{r}
+dat[dat$points <= 4,'player']
+```
+### Player with 0 points
+```{r}
+dat[dat$points == 0,'player']
+```
+### Number of Players from UC Berkeley
+```{r}
+length(dat[dat$college == 'University of California, Berkeley','player'])
+```
+### Number of Players from Notre Dame
+```{r}
+length(dat[dat$college == 'University of Notre Dame', 'player'])
+dat[dat$college == 'University of Notre Dame', 'player']
+```
+### Players with Weight > 260lb
+```{r}
+length(dat[dat$weight > 260, 'player'])
+dat[dat$weight > 260, 'player']
+```
+### Players who did not attend US College
+```{r}
+length(dat[dat$college == '', 'player'])
+```
+### Player with maximum rate of points per minute
+```{r}
+dat$ppm3 <- NULL
+ppm <- dat$points / dat$minutes
+dat <-cbind(dat, ppm)
+dat[dat$ppm == max(as.vector(dat$ppm)), 'player']
+```
+### Player with maximum rate of 3 pointers per minute
+```{r}
+dat$ppm3 <- NULL
+ppm3 <- dat$points3 / dat$minutes
+dat <-cbind(dat, ppm3)
+dat[dat$ppm3 == max(as.vector(dat$ppm3)), 'player']
+```
+### Player with maximum rate of 2 pointers per minute
+```{r}
+dat$ppm2 <- NULL
+ppm2 <- dat$points2 / dat$minutes
+dat <-cbind(dat, ppm2)
+dat[dat$ppm2 == max(as.vector(dat$ppm2)), 'player']
+```
+### Player with maximum rate of 1 pointers per minute
+```{r}
+dat$ppm1 <- NULL
+ppm1 <- dat$points1 / dat$minutes
+dat <-cbind(dat, ppm1)
+dat[dat$ppm1 == max(as.vector(dat$ppm1)), 'player']
+```
+### GSW Stats
+```{r}
+gsw <- dat[dat$team == 'GSW', c('player','height','weight')]
+gsw
+```
+### GSW Sorted by Height
+```{r}
+gsw[order(gsw$height),]
+```
+### GSW Sorted by Weight
+```{r}
+gsw[order(gsw$weight, decreasing = TRUE),]
+```
+
+### Top 5 highest paid
+```{r}
+head(dat[order(dat$salary, decreasing = TRUE), c('player', 'team', 'salary')], n = 5)
+```
+
+### Top 10 3 point players
+```{r}
+head(dat[order(dat$points3, decreasing = TRUE), c('player', 'team', 'points3')], n = 10)
+```
+
+### Grouped by Position
+```{r}
+aggregate(dat[,c('height', 'weight', 'age')], by=list(dat$position), FUN = mean)
+```
+### Grouped by Team
+```{r}
+aggregate(dat[,c('height', 'weight', 'age')], by=list(dat$team), FUN = mean)
+```
+### Grouped by Team and Position
+```{r}
+aggregate(dat[,c('height', 'weight', 'age')], by=list(dat$position, dat$team), FUN = mean)
+```
