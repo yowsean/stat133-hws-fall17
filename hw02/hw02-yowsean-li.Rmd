@@ -10,6 +10,8 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 ```{r}
 library(readr)
+library(dplyr)
+library(ggplot2)
 ```
 # 2. Import the data in R
 ```{r}
@@ -43,8 +45,57 @@ dat$REB <- dat$OREB + dat$DREB
 dat$MPG <- dat$MIN/dat$GP
 dat$EFF <- (dat$PTS + dat$REB + dat$AST + dat$STL + dat$BLK - dat$Missed_FG - dat$Missed_FT - dat$TO) / dat$GP
 summary(dat$EFF)
+```
+
+```{r}
 hist(dat$EFF, xlab = "EFF", ylab = "Frequency", main = "Histogram of Efficiency (EFF)")
 ```
 
+```{r}
+slice(arrange(select(dat, Player, Team, Salary, EFF), desc(EFF)), 0:10)
+```
 
+```{r}
+select(filter(dat, EFF < 0), Player)
+```
+
+```{r}
+cor_EFF <- cor(select(dat, PTS, REB, AST, STL, BLK, Missed_FG, Missed_FT, TO), select(dat, EFF))
+cor_EFF[6] <- -1 * cor_EFF[6]
+cor_EFF[7] <- -1 * cor_EFF[7]
+cor_EFF[8] <- -1 * cor_EFF[8]
+cor_EFF <- arrange(select(as.data.frame(as.table(cor_EFF)), Var1, Freq), desc(Freq))
+cor_EFF$Var1 <- factor(cor_EFF$Var1, levels = cor_EFF$Var1)
+cor_EFF
+```
+
+```{r}
+ggplot(data=cor_EFF, aes(x=Var1, y=Freq)) +
+  geom_bar(stat='identity') +
+  labs(title = "Correlations between Player Stats and EFF", x = "", y = "Correlation")
+```
+
+# 5. Efficiency and Salary
+```{r}
+plot(dat$EFF, dat$Salary, xlab="EFF", ylab="Salary")
+lines(lowess(dat$EFF, dat$Salary))
+cor(dat$EFF, dat$Salary)
+```
+The relationship between EFF and Salary is positively correlated. Once EFF reaches around 12.5, the increase in salary per EFF score seems to increase.
+```{r}
+players2 <- filter(dat, MPG >= 20)
+plot(players2$EFF, players2$Salary, xlab="EFF", ylab="Salary")
+lines(lowess(players2$EFF, players2$Salary))
+cor(players2$EFF, players2$Salary)
+```
+The relationship between EFF and Salary for players who play at least 20 minutes per game is also positively correlated. This correlation is more linear than the correlation for all players since the increase in salary per EFF score is more consistent.
+
+# 6. Comments and reflections
+- Some of the harder parts were getting the plots formatted correctly
+- Easier parts were manipulating the data frames
+- I didn't need help on the assignment
+- It took me a couple hours to complete the assignment
+- The most time consuming part was formatting plots
+- No particular part was frustrating or hard to understand
+- Being able to visualize the data in the plots was the most exciting part
 
