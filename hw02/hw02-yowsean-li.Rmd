@@ -8,5 +8,43 @@ output: github_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+```{r}
+library(readr)
+```
+# 2. Import the data in R
+```{r}
+dat <- read.csv('data/nba2017-player-statistics.csv',colClasses=c("character", "character", "factor", "character", "double", rep("integer", 19)))
+str(dat)
+```
+```{r}
+dat <- read_csv('data/nba2017-player-statistics.csv',
+                col_types = cols(
+                  .default = "i",
+                  Player = "c",
+                  Team = "c",
+                  Position = col_factor(levels=c("C","PF","SF","SG","PG")),
+                  Experience = "c",
+                  Salary = "d"))
+str(dat)
+```
+# 3. Right after importing the data
+
+```{r}
+dat$Experience[dat$Experience=="R"] <- "0"
+dat$Experience <- as.integer(dat$Experience)
+```
+
+# 4. Performance of Players
+```{r}
+dat$Missed_FG <- dat$FGA - dat$FGM
+dat$Missed_FT <- dat$FTA - dat$FTM
+dat$PTS <- dat$Points3 * 3 + dat$Points2 * 2 + dat$FTM
+dat$REB <- dat$OREB + dat$DREB
+dat$MPG <- dat$MIN/dat$GP
+dat$EFF <- (dat$PTS + dat$REB + dat$AST + dat$STL + dat$BLK - dat$Missed_FG - dat$Missed_FT - dat$TO) / dat$GP
+summary(dat$EFF)
+hist(dat$EFF, xlab = "EFF", ylab = "Frequency", main = "Histogram of Efficiency (EFF)")
+```
+
 
 
