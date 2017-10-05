@@ -1,8 +1,8 @@
 # ===================================================================
 # Title: Lab 6 Script
-# Description: 
+# Description: Various commands
 # Input(s): data file 'nba2017-players.csv'
-# Output(s): 
+# Output(s): Outputs for data structure, summary of warriors and lakers
 # Author: Yowsean Li
 # Date: 10-05-2017
 # ===================================================================

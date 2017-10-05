@@ -16,7 +16,7 @@ my_table1 <- data.frame(
   col2 = seq(from = 10, to = 50, by = 10),
   col3 = c(TRUE, TRUE, FALSE, TRUE, FALSE)
 )
-
+  
 my_table1
 ```
 

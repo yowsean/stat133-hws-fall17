@@ -1,0 +1,298 @@
+---
+title: "lab05-yowsean-li"
+author: "Yowsean Li"
+date: "9/28/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+# don't forget to load the packages
+library(dplyr)
+library(ggplot2)
+```
+
+```{r}
+dat <- read.csv('nba2017-players.csv', stringsAsFactors = FALSE)
+```
+
+```{r}
+# first three rows
+three_rows <- slice(dat, 1:3)
+three_rows
+```
+
+```{r}
+# subset rows given a condition
+# (height greater than 85 inches)
+gt_85 <- filter(dat, height > 85)
+gt_85
+```
+
+```{r}
+# columns by name
+player_height <- select(dat, player, height)
+player_height
+```
+
+```{r}
+five_rows <- slice(dat, 1:5)
+five_rows
+```
+
+```{r}
+slice(dat, seq(10, 50, 5))
+```
+
+```{r}
+slice(dat, 437:441)
+```
+```{r}
+filter(dat, height < 70)
+```
+
+```{r}
+filter(dat, team == 'GSW')
+```
+```{r}
+filter(dat, team == 'GSW' & position == 'C')
+```
+
+```{r}
+select(filter(dat, team == 'LAL'), player)
+```
+```{r}
+select(filter(dat, team == 'GSW' & position == 'PG'), player, salary)
+```
+
+```{r}
+select(filter(dat, experience > 10 & salary < 10000000), player, age, team)
+```
+```{r}
+slice(select(filter(dat, age == 20 & experience == 0), player, team ,height, weight), 0:5)
+```
+```{r}
+# creating a small data frame step by step
+gsw <- filter(dat, team == 'GSW')
+gsw <- select(gsw, player, height, weight)
+gsw <- slice(gsw, c(4, 8, 10, 14, 15))
+gsw
+```
+```{r}
+mutate(gsw, height / weight)
+```
+```{r}
+mutate(gsw, ht_wt = height / weight)
+```
+
+```{r}
+gsw2 <- mutate(gsw, ht_m = height * 0.0254, wt_kg = weight * 0.4536)
+gsw2
+```
+```{r}
+# order rows by height (increasingly)
+arrange(gsw, height)
+```
+
+
+```{r}
+# order rows by height (decreasingly)
+arrange(gsw, desc(height))
+```
+
+```{r}
+# order rows by height, and then weight
+arrange(gsw, height, weight)
+```
+
+```{r}
+mutate(gsw, product=height*weight)
+```
+
+```{r}
+gsw3 <-  mutate(gsw, log_height=log(height), log_weight=log(weight))
+gsw3
+```
+
+```{r}
+arrange(filter(dat, height < 71),height)
+```
+```{r}
+slice(arrange(select(dat, player, team, salary), desc(salary)), 0:5)
+```
+
+```{r}
+slice(arrange(select(dat, player, team, points3), desc(points3)), 0:10)
+```
+
+```{r}
+gsw_mpg <- arrange(select(mutate(filter(dat, team == 'GSW'), min_per_game = minutes/games), player, experience, min_per_game), desc(min_per_game))
+gsw_mpg
+```
+
+```{r}
+# average salary of NBA players
+summarise(dat, avg_salary = mean(salary))
+```
+
+```{r}
+summarise(
+  dat, 
+  min = min(salary),
+  median = median(salary),
+  avg = mean(salary),
+  max = max(salary)
+)
+```
+
+```{r}
+summarise(
+  group_by(dat, team),
+  avg_salary = mean(salary)
+)
+```
+
+```{r}
+summarise(
+  group_by(dat, position),
+  avg_salary = mean(salary)
+)
+```
+
+```{r}
+summarise(dat, max_salary = max(salary))
+```
+```{r}
+summarise(dat, sd(points3))
+```
+
+```{r}
+summarise(
+  group_by(dat, team),
+  median(points3)
+)
+```
+
+```{r}
+summarise(
+  group_by(dat, team),
+  mean(points3)
+)
+```
+
+```{r}
+summarise(filter(dat, position == 'PF' & experience == 5 | experience == 10), mean(age), sd(age))
+```
+
+```{r}
+# scatterplot (option 1)
+ggplot(data = dat) +
+  geom_point(aes(x = points, y = salary))
+```
+```{r}
+# scatterplot (option 2)
+ggplot(data = dat, aes(x = points, y = salary)) +
+  geom_point()
+```
+
+```{r}
+# colored scatterplot 
+ggplot(data = dat, aes(x = points, y = salary)) +
+  geom_point(aes(color = position))
+```
+
+```{r}
+# sized and colored scatterplot 
+ggplot(data = dat, aes(x = points, y = salary)) +
+  geom_point(aes(color = position, size = points3))
+```
+```{r}
+# sized and colored scatterplot 
+ggplot(data = dat, aes(x = points, y = salary)) +
+  geom_point(aes(color = position, size = points3), alpha = 0.7)
+```
+
+```{r}
+ggplot(data = gsw, aes(x = height, y = weight)) +
+  geom_point()
+```
+```{r}
+ggplot(data = gsw, aes(x = height, y = weight)) +
+  geom_point()+geom_text(aes(label=player))
+```
+
+```{r}
+ggplot(data = dat, aes(x=salary)) +
+  geom_density()
+```
+
+```{r}
+ggplot(data=dat, aes(x=points2)) + 
+  geom_histogram(bins=50)
+```
+```{r}
+ggplot(data=dat, aes(x=position)) +
+  geom_bar()
+```
+
+```{r}
+ggplot(data=dat, aes(x=experience, y =salary)) +
+  geom_point() + geom_smooth()
+```
+```{r}
+ggplot(data=dat, aes(x=experience, y =salary)) +
+  geom_point() + geom_smooth(method=loess)
+```
+```{r}
+# scatterplot by position
+ggplot(data = dat, aes(x = points, y = salary)) +
+  geom_point() +
+  facet_wrap(~ position)
+```
+
+```{r}
+# scatterplot by position
+ggplot(data = dat, aes(x = points, y = salary)) +
+  geom_point(aes(color = position), alpha = 0.7) +
+  facet_grid(~ position) +
+  geom_smooth(method = loess)
+```
+```{r}
+# scatterplot by position
+ggplot(data = dat, aes(x = points, y = salary)) +
+  geom_point(aes(color = position), alpha = 0.7) +
+  facet_grid(position ~ .) +
+  geom_smooth(method = loess)
+```
+
+```{r}
+ggplot(data = dat, aes(x=experience, y=salary)) +
+  geom_point() +
+  facet_wrap(~ position)
+```
+
+```{r}
+ggplot(data = dat, aes(x=experience, y=salary)) +
+  geom_point() +
+  facet_wrap(~team)
+```
+
+```{r}
+ggplot(data=dat, aes(x=age)) +
+  geom_density() + 
+  facet_wrap(~team)
+```
+```{r}
+ggplot(data = dat, aes(x=height, y=weight)) +
+  geom_point() +
+  facet_wrap(~position)
+```
+```{r}
+ggplot(data = dat, aes(x=height, y=weight)) +
+  geom_density2d() +
+  facet_wrap(~position)
+```
+
