@@ -9,3 +9,106 @@ output: github_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+```{r}
+library(readr)    # importing data
+library(dplyr)    # data wrangling
+library(ggplot2)  # graphics
+```
+
+# Ranking of Teams
+
+```{r}
+teams <- read_csv('../data/nba2017-teams.csv')
+```
+
+```{r}
+ordered_sal <- arrange(teams, desc(salary))
+ordered_sal$team <- factor(ordered_sal$team, levels=ordered_sal$team[order(ordered_sal$salary)])
+ggplot(data = ordered_sal, aes(x=team, y=salary)) +
+  geom_bar(stat="identity") +
+  coord_flip() +
+  labs(title="NBA Teams Ranked by Total Salary") +
+  ylab("Salary (in Millions)") +
+  xlab("Team") +
+  geom_hline(yintercept = mean(ordered_sal$salary), color="red")
+```
+
+Ranking of NBA teams by total salary of players.
+
+```{r}
+ordered_sal <- arrange(teams, desc(points))
+ordered_sal$team <- factor(ordered_sal$team, levels=ordered_sal$team[order(ordered_sal$points)])
+ggplot(data = ordered_sal, aes(x=team, y=points)) +
+  geom_bar(stat="identity") +
+  coord_flip() +
+  labs(title="NBA Teams Ranked by Total Points") +
+  ylab("Total Points") +
+  xlab("Team") +
+  geom_hline(yintercept = mean(ordered_sal$points), color="red")
+```
+
+Ranking of NBA teams by total points scored.
+
+```{r}
+ordered_sal <- arrange(teams, desc(efficiency))
+ordered_sal$team <- factor(ordered_sal$team, levels=ordered_sal$team[order(ordered_sal$efficiency)])
+ggplot(data = ordered_sal, aes(x=team, y=efficiency)) +
+  geom_bar(stat="identity") +
+  coord_flip() +
+  labs(title="NBA Teams Ranked by Total Efficiency") +
+  ylab("Total Efficiency") +
+  xlab("Team") +
+  geom_hline(yintercept = mean(ordered_sal$efficiency), color="red")
+```
+
+Ranking of NBA teams by total efficiency of players.
+
+```{r}
+teams2 <- data.frame(select(teams, points3, points2, free_throws, off_rebounds, def_rebounds, assists, steals, blocks,turnovers, fouls))
+rownames(teams2) <- teams$team
+
+pca <- prcomp(teams2, scale.=TRUE)
+team_pca <- data.frame(pca$x)
+team_pca <- add_rownames(team_pca, "team")
+team_pca$team <- factor(team_pca$team, levels=team_pca$team[order(team_pca$PC1)])
+ggplot(data = team_pca, aes(x=team, y=PC1)) +
+  geom_bar(stat="identity") +
+  coord_flip() +
+  labs(title="NBA Teams Ranked by PC1") +
+  ylab("PC1") +
+  xlab("Team")
+```
+```{r}
+eigs <- data.frame(
+  eigenvalue = round(pca$sdev^2, 4),
+  prop = round(pca$sdev^2 / sum(pca$sdev^2), 4),
+  cumprop = round(pca$sdev^2 / sum(pca$sdev^2), 4)
+)
+eigs
+sum(pca$sdev)
+```
+
+```{r}
+ggplot(data = team_pca, aes(x=PC1, y=PC2)) +
+  geom_point(size=0) + 
+  geom_text(aes(label=team)) +
+  labs(title="PCA plot (PC1 and PC2)") +
+  ylab("PC2") +
+  xlab("PC1")
+```
+
+```{r}
+scaled_PC1 <- select(team_pca, team, PC1)
+min_PC1 <- min(team_pca$PC1)
+max_PC1 <- max(team_pca$PC1)
+scaled_PC1$PC1 <- 100*((team_pca$PC1 - min_PC1)/(max_PC1-min_PC1))
+scaled_PC1$team <- factor(scaled_PC1$team, levels=scaled_PC1$team[order(scaled_PC1$PC1)])
+ggplot(data = scaled_PC1, aes(x=team, y=PC1)) +
+  geom_bar(stat="identity") +
+  coord_flip() +
+  labs(title="NBA Teams Ranked by scaled PC1") +
+  ylab("First PC (scaled from 0 to 100") +
+  xlab("Team")
+```
+
+
