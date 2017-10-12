@@ -1,0 +1,234 @@
+---
+title: "lab07-yowsean-li"
+author: "Yowsean Li"
+date: "10/12/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+f <- function(x) {
+  x * x
+}
+g <- function(x) {
+  2 * x + 5
+}
+
+f(2)
+f(-5)
+
+g(0)
+g(-5/2)
+```
+
+```{r}
+fog <- function(x) {
+  f(g(x))
+}
+gof <- function(x) {
+  g(f(x))
+}
+
+fog(2)
+fog(-5)
+
+gof(0)
+gof(-5/2)
+```
+
+```{r}
+pythagoras <- function(a,b) {
+  sqrt(a * a + b * b)
+}
+pythagoras(3, 4)
+```
+
+```{r}
+pythagoras <- function(a) {
+  sqrt(2 * (a * a))
+}
+pythagoras(5)
+```
+
+```{r}
+miles2kms <- function(m) {
+  m * 1.6
+}
+df <- data.frame(miles=seq(1, 100))
+df$kms <- miles2kms(df$miles)
+df
+```
+
+```{r}
+gallons2liters <- function(g) {
+  g * 3.78541
+}
+liters2gallons <- function(l) {
+  l / 3.78541
+}
+df2 <- data.frame(liters=c(seq(1,9), seq(10, 100, 10)))
+df2$gallons <- liters2gallons(df2$liters)
+df2
+```
+
+```{r}
+seconds2years <- function(x){
+  x / (60 * 60 * 8760)
+}
+seconds2years(1000000000)
+```
+
+```{r}
+gaussian <- function(x, m, s) {
+  (1/(s*(sqrt(2 * pi))))*exp(-0.5*((x-m)/s)^2)
+}
+gaussian(1, 0, 2)
+dnorm(x = 1, mean = 0, sd = 2)
+```
+
+```{r}
+x_values <- seq(-4.5, 4.5, by = 0.1)
+y_values <- gaussian(x_values, 0, 2)
+plot(x_values, y_values, las = 1, type = "l", lwd = 2)
+```
+
+```{r}
+poly1 <- function(x) {
+  (x^2) * (x - 1)
+}
+# set of points
+x <- seq(-4, 4, length.out = 20)
+y <- poly1(x)
+
+# graph polynomial
+plot(x, y, type = 'l', lwd = 3, col = "#FB7215", las = 1) + 
+abline(h = 0, v = 0, col = '#888888aa', lwd = 1.5) +
+title(main = expression(paste(f(x), ' = ', x^2, (x - 1))))
+```
+
+```{r}
+poly2 <- function(x) {
+  (x^3)
+}
+# set of points
+x <- seq(-4, 4, length.out = 20)
+y <- poly2(x)
+
+# graph polynomial
+plot(x, y, type = 'l', lwd = 3, col = "#FB7215", las = 1) + 
+abline(h = 0, v = 0, col = '#888888aa', lwd = 1.5) +
+title(main = expression(paste(f(x), ' = ', x^3)))
+```
+
+```{r}
+poly3 <- function(x) {
+  (x^2 - 1) * (x + 3)^3
+}
+# set of points
+x <- seq(-4, 4, length.out = 20)
+y <- poly3(x)
+
+# graph polynomial
+plot(x, y, type = 'l', lwd = 3, col = "#FB7215", las = 1) + 
+abline(h = 0, v = 0, col = '#888888aa', lwd = 1.5) +
+title(main = expression(paste(f(x), ' = ', (x^2 - 1), (x + 3)^3)))
+```
+
+```{r}
+poly4 <- function(x) {
+  (x^2 - 1) * (x^2 - 9)
+}
+# set of points
+x <- seq(-4, 4, length.out = 20)
+y <- poly4(x)
+
+# graph polynomial
+plot(x, y, type = 'l', lwd = 3, col = "#FB7215", las = 1) + 
+abline(h = 0, v = 0, col = '#888888aa', lwd = 1.5) +
+title(main = expression(paste(f(x), ' = ', (x^2 - 1), (x^2 - 9))))
+```
+
+```{r}
+descriptive <- function(v) {
+  sum <- summary(v)
+  v <- c(sum[0], sum[1], sum[2], sum[3], sum[4], sum[5], range(v), IQR(v), sd(v))
+  names(v) <- c("min", "q1", "median", "mean", "q3", "max", "range", "iqr", "sd")
+  v
+}
+descriptive(c(1,2))
+```
+
+```{r}
+combinations <- function(n, k) {
+  factorial(n)/(factorial(k) * factorial(n-k))
+}
+combinations(n = 5, k = 2)
+binom_prob <- function(n, k, prob) {
+  combinations(n, k) * prob^k * (1-prob)^(n-k)
+}
+binom_prob(n = 5, k = 2, prob = 0.5)
+```
+
+```{r}
+is_even <- function(x) {
+  x %% 2 == 0
+}
+# even number
+is_even(10)
+
+# odd number
+is_even(33)
+
+# not a number
+is_even('a')
+```
+
+```{r}
+is_odd <- function(x) {
+  x %% 2 == 1
+}
+
+# odd number
+is_odd(1)
+
+# even number
+is_odd(4)
+
+# not a number
+is_odd('a')
+```
+
+```{r}
+grade <- function(score) {
+  if (score > 100 | score < 0) {
+    stop( "score must be a number between 0 and 100")
+  }
+  if (score >= 90) {
+    print("A")
+  } else if (score >= 80) {
+    print("B")
+  } else if (score >= 70) {
+    print("C")
+  } else if (score >= 60) {
+    print("D")
+  } else {
+    print("F")
+  }
+}
+
+# grade "A"
+grade(score = 90)
+
+# grade "B"
+grade(score = 89.9999)
+
+# grade "C"
+grade(score = 70.0000001)
+
+# grade "F"
+grade(score = 50)
+```
+
