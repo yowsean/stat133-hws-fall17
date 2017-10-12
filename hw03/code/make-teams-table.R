@@ -49,7 +49,7 @@ teams <- roster_stats %>%
     efficiency=sum(efficiency)
   )
 
-sink(file = '../data/teams-summary.txt')
+sink(file = '../output/teams-summary.txt')
 summary(team)
 sink()
 
