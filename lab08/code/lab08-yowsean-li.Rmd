@@ -1,0 +1,156 @@
+---
+title: "lab08-yowsean-li"
+author: "Yowsean Li"
+date: "10/19/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+vec <- c(3, 1, 4) # Change this value!
+
+for (j in 1:3) {
+  print(vec[j] * 3)
+}
+```
+
+```{r}
+vec <- c(3, 1, 4)
+vec2 <- rep(0, length(vec))
+
+for (i in 1:3) {
+  vec2[i] <- vec[i] * 3
+}
+```
+
+```{r}
+n <- 10
+k <-  rep(0, n)
+for (i in 0:n) {
+  k[i+1] <- 1/(2^i)
+}
+sum(k)
+```
+Converges.
+```{r}
+n2 <- 3
+k2 <-  rep(0, n2)
+for (i in 0:n2) {
+  k2[i+1] <- 1/(9^i)
+}
+sum(k2)
+```
+Converges.
+```{r}
+a1 <- 3
+d <- 3
+n3 = 4
+sums <- rep(0, n3)
+for (i in 1:n3) {
+  sums[i] <- a1 + (i - 1) * d
+}
+sum(sums)
+```
+Does not converge.
+```{r}
+a1_g <- 3
+r_g <- 2
+n4 <- 4
+vals <- rep(0, n4)
+for (i in 1:n4) {
+  vals[i] <- a1 * r_g^(i - 1)
+}
+sum(vals)
+```
+Does not converge.
+```{r}
+x_val <- 1
+n5 <- 100
+add <- 1
+total_sum <- 0
+for(i in seq(1, n5, 2)){
+  if (add == 1) {
+    total_sum <-  total_sum + (x_val^i)/(factorial(i))
+    add <- 0
+  } else {
+    total_sum <-  total_sum - (x_val^i)/(factorial(i))
+    add <- 1
+  }
+}
+total_sum
+sin(1)
+```
+
+```{r}
+set.seed(123)
+X <- matrix(rnorm(12), nrow = 4, ncol = 3)
+X
+Y <- matrix(NA, nrow = 4, ncol = 3)
+for (i in 1:nrow(X)) {
+  for (j in 1:ncol(X)) {
+    if (X[i,j] > 0) {
+      Y[i, j] <- sqrt(X[i, j])
+    } else {
+      Y[i, j] <- X[i, j]^2
+    }
+  }
+}
+Y
+```
+
+```{r}
+# your reduce() function
+reduce <- function(x) {
+  while (x %% 2 == 0) { # Continue the loop as long as val_while is even.
+    print(x)
+    x <- x / 2
+  }
+}
+
+reduce(898128000)
+```
+
+```{r}
+x_mean <- 1:100
+result <- 0
+sum_mean <- 0
+for (i in 1:100) {
+  sum_mean <- sum_mean + i
+}
+sum_mean <- sum_mean / 100
+sum_mean
+```
+
+```{r}
+x_mean2 <- 1:100
+result2 <- 0
+sum_mean2 <- 0
+i = 100
+while(i > 0) {
+  sum_mean2 <- sum_mean2 + i
+  i <- i- 1
+}
+sum_mean2 <- sum_mean2 / 100
+sum_mean2
+```
+
+```{r}
+x_mean3 <- 1:100
+result3 <- 0
+sum_mean3 <- 0
+i2 = 100
+repeat {
+  if (i2 < 1) {
+    break
+  }
+  sum_mean3 <- sum_mean3 + i2
+  i2 <- i2- 1
+}
+sum_mean3 <- sum_mean3 / 100
+sum_mean3
+```
+
+
