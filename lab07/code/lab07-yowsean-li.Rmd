@@ -183,7 +183,7 @@ is_even(10)
 is_even(33)
 
 # not a number
-is_even('a')
+#is_even('a')
 ```
 
 ```{r}
@@ -198,7 +198,7 @@ is_odd(1)
 is_odd(4)
 
 # not a number
-is_odd('a')
+#is_odd('a')
 ```
 
 ```{r}
