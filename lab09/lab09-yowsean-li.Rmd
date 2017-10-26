@@ -1,0 +1,45 @@
+---
+title: "lab09-yowsean-li"
+author: "Yowsean Li"
+date: "10/26/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+```
+
+```{r}
+  box1 <- c('b', 'b', 'r')
+  box2 <- c('b', 'b', 'r', 'r', 'r', 'w')
+  drawn <- matrix(nrow=1000, ncol=4)
+  set.seed(12341)
+  sim <- function (box1, box2) {
+    r <- runif(1)
+    if (r > 0.5) {
+      sample(box1, 4, replace=TRUE)
+    } else {
+      sample(box2, 4, replace=FALSE)
+    }
+  }
+  counts <- c(0,0,0,0,0)
+  freqs <- matrix(nrow=1000, ncol=5)
+  for (i in 1:1000) {
+    drawn[i, ] <- sim(box1, box2)
+    b_count <- sum(drawn[i, ] == 'b')
+    counts[b_count + 1] <- counts[b_count + 1] + 1
+    freqs[i, ] <- counts / i
+  }
+  plot(1:1000, freqs[, 1], type="l", col="red", xlab='reps', ylab='freqs', main='Relative frequencies of number of blue balls')
+  par(new=TRUE)
+  plot(1:1000, freqs[, 2], type="l", col="brown", ann=FALSE, axes = FALSE)
+  par(new=TRUE)
+  plot(1:1000, freqs[, 3], type="l", col="green", ann=FALSE, axes = FALSE)
+  par(new=TRUE)
+  plot(1:1000, freqs[, 4], type="l", col="blue", ann=FALSE, axes = FALSE)
+  par(new=TRUE)
+  plot(1:1000, freqs[, 5], type="l", col="pink", ann=FALSE, axes = FALSE)
+  legend(1, 95, legend=c("Line 1", "Line 2"), col=c("red", "blue"), lty=1:2, cex=0.8)
+```
+
