@@ -12,7 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ### Introduction
 
-In data visualization, color is a powerful tool that can not only improve aesthetics, but also make plots more concise and easier to understand. Color is used widely in data visualization, as it provides better aesthetics, but it also allows for much more flexibility which can create plots that are easier to understand and visualize. In this post, we will also explore a few examples of when to incorporate color into plots and show how color adds another dimension for plots.
+In data visualization, color is a powerful tool that can not only improve aesthetics, but also make plots more concise and easier to understand. Color allows for more information to be communicated in the same amount of space, allowing for plots to be more versatile while having little to no drawbacks. However it is important that color is used properly since it can also make plots distracting and harder to read. In this post, we will explore a few examples of how and when to incorporate color into plots and also go over some general rules to follow when choosing colors to use.
 
 ### Discussion and Examples
 
@@ -87,7 +87,7 @@ ggplot(data=dat, aes(x=Age, y=Rank)) +
   ggtitle("Age and Rank")
 ```
 
-One way of resolving this problem is to use a contour plot, which uses color to represent the density of the points. This gives us additional information that could not be portrayed in the normal scatterplot. In the plot below, we can see the distribution of players based on age and rank. Specifically, we can see that players ranked lower (lower is better) are between ages 25 and 28 and players ranked higher are around 22. 
+One way of resolving this problem is to use a contour plot, which uses color to represent the density of the points. This gives us additional information that could not be portrayed in the normal scatterplot. In the plot below, we can see the distribution of players based on age and rank. Specifically, we can see that players ranked lower (lower is better) are between ages 25 and 28 and players ranked higher are around 22. This plot gives us a far better understanding of the data than the previous plot.
 ```{r, fig.width=6,fig.height=4}
 ggplot(data=dat, aes(x=Age, y=Rank)) +
   geom_point(alpha=0.25) + 
