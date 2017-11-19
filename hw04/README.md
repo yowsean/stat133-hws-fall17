@@ -5,7 +5,7 @@
 * the distribution and summary statistics of various scores
 * the relationships between pairs of scores.
 
-Run the shiny app:
+### Run the shiny app:
 
 ```
 library(shiny)
