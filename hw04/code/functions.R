@@ -10,7 +10,6 @@
 # Input: vector
 # Output: cleaned vector with no missing values
 remove_missing <- function(v) {
-  v <- sort(v)
   r <- c()
   for (i in v) {
     if (!is.na(i)) {
@@ -82,7 +81,7 @@ get_median <- function(v, na.rm=TRUE) {
   if (length(v) %% 2 == 0) {
     (v[length(v)/2] + v[(length(v)/2) + 1])/2
   } else {
-    v[length(v)%/%2 + 1]
+    v[(length(v)%/%2 + 1)]
   }
 }
 
