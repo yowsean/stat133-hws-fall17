@@ -1,0 +1,11 @@
+# 7. Comments and Reflections
+
+- No, not my first time writing unit tests
+- 1
+- This was my first time working with ggvis
+- 5
+- I like ggplot the most since makes the most logical sense to me.
+The modular syntax helps me visualize how I want to manipulate the plot.
+- No
+- A couple hours
+- The most time consuming part was figuring out Shiny app bugs
