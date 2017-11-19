@@ -1,6 +1,10 @@
 # ===================================================================
 # Title: Clean-Data-Script
 # Description: Script to clean rawscores.csv
+# Inputs: rawscores.csv
+# Outputs: summary-rawscores.txt, summary-cleanscores.txt,
+#          Lab-stats.txt, Homework-stats.txt, Quiz-stats.txt,
+#          Test1-stats.txt, Test2-stats.txt, Overall-stats.txt
 # Author: Yowsean Li
 # Date: 11-13-2017
 # ===================================================================

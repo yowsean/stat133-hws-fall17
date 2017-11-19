@@ -55,10 +55,10 @@ test_that("get_percentile90", {
 
 # Test get_median()
 test_that("get_median", {
-  expect_equal(get_median(c(1, 2, 3, NA, 4)), 2.5)
-  expect_equal(get_median(c(5, 2, 13, 2, 4)), 13)
-  expect_equal(get_median(c(NA, 10, NA)), 10)
-  expect_equal(get_median(c(8, 2, 5, NA), na.rm=FALSE), 3.5)
+  expect_equal(get_median(c(1, 2, 3, 4)), median(c(1, 2, 3, 4)))
+  expect_equal(get_median(c(5, 2, 13, 2, 4)), median(c(5, 2, 13, 2, 4)))
+  expect_equal(get_median(c(NA, 10, NA)), median(c(10)))
+  expect_equal(get_median(c(8, 2, 5, NA)), median(c(8, 2, 5)))
 })
 
 # Test get_average()

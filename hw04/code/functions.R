@@ -78,6 +78,7 @@ get_median <- function(v, na.rm=TRUE) {
   if (na.rm == TRUE) {
     v <- remove_missing(v)
   }
+  v <- sort(v)
   if (length(v) %% 2 == 0) {
     (v[length(v)/2] + v[(length(v)/2) + 1])/2
   } else {
