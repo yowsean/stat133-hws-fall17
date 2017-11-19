@@ -1,6 +1,6 @@
 # HW04 - Grades Visualizer
 
-###Shiny App to visualize data from rawscores.csv:
+### Shiny App to visualize data from rawscores.csv:
 * the overall grade distribution
 * the distribution and summary statistics of various scores
 * the relationships between pairs of scores.
