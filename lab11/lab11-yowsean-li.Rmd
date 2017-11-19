@@ -1,0 +1,146 @@
+---
+title: "lab11-yowsean-li"
+author: "Yowsean Li"
+date: "11/16/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+#install.packages("stringr")
+library(stringr)
+dat <- read.csv('mobile-food-sf.csv', stringsAsFactors = FALSE)
+```
+
+```{r}
+times <- c('12AM', '12PM', '9AM', '8PM')
+str_sub(times, end=-3)
+str_sub(times, -2)
+```
+
+```{r}
+str_replace(times, pattern = 'AM|PM', replacement = '')
+```
+
+```{r}
+hours <- as.numeric(str_replace(times, pattern = 'AM|PM', replacement = ''))
+periods <- str_sub(times, start = -2)
+to24 <- function(hours, periods) {
+  hr24 <- c()
+  for (i in 1:length(hours)) {
+    if (periods[i] == 'PM') {
+      hr24 <- c(hr24, 12 + hours[i] %% 12)
+    } else {
+      hr24 <- c(hr24, hours[i] %% 12)
+    }
+  }
+  hr24
+}
+starthrs <- as.numeric(str_replace(dat$starttime, pattern = 'AM|PM', replacement = ''))
+startperiods <- str_sub(dat$starttime, start = -2)
+start24 <- to24(starthrs, startperiods)
+dat$start <- start24
+endhrs <- as.numeric(str_replace(dat$endtime, pattern = 'AM|PM', replacement = ''))
+endperiods <- str_sub(dat$endtime, start = -2)
+end24 <- to24(endhrs, endperiods)
+dat$end <- end24
+dat$duration <- dat$end - dat$start
+```
+
+```{r}
+lat_lon <-str_replace_all(dat$Location, pattern = '\\(|\\)', replacement = '')
+lat_lon <- str_split(lat_lon, pattern = ',')
+lat <- lapply(lat_lon, function(x) x[1])
+lat <- as.numeric(unlist(lat))
+lon <- lapply(lat_lon, function(x) x[2])
+lon <- as.numeric(unlist(lon))
+dat$lat <- lat
+dat$lon <- lon
+```
+
+```{r}
+library(RgoogleMaps)
+# coordinates for center of the map
+center <- c(mean(dat$lat, na.rm = TRUE), mean(dat$lon, na.rm = TRUE))
+
+# zoom value
+zoom <- min(MaxZoom(range(dat$lat, na.rm = TRUE), 
+                    range(dat$lon, na.rm = TRUE)))
+
+# san francisco map
+map1 <- GetMap(center=center, zoom=zoom, destfile = "san-francisco.png")
+PlotOnStaticMap(map1, dat$lat, dat$lon, col = "#ed4964", pch=20)
+```
+
+```{r}
+library(ggmap)
+dat <- na.omit(dat)
+sbbox <- make_bbox(lon = dat$lon, lat = dat$lat, f = .1)
+sbbox
+
+# get a 'terrain' map
+sf_map <- get_map(location = sbbox, maptype = "terrain", source = "google")
+
+ggmap(sf_map) + 
+  geom_point(data = dat, 
+             mapping = aes(x = lon, y = lat), 
+             color = "red", alpha = 0.2, size = 1)
+```
+
+```{r}
+dat$optionaltext[1:3]
+foods <- dat$optionaltext[1:10]
+burritos <- dat[str_detect(dat$optionaltext, "urritos") == TRUE,]
+burritos <- na.omit(burritos)
+ggmap(sf_map) + 
+  geom_point(data = burritos, 
+             mapping = aes(x = lon, y = lat), 
+             color = "blue", alpha = 0.2, size = 1)
+```
+
+```{r}
+animals <- c('dog', 'cat', 'bird', 'dolphin', 'lion',
+             'zebra', 'tiger', 'wolf', 'whale', 'eagle',
+             'pig', 'osprey', 'kangaroo', 'koala')
+grep("o*", animals, value=TRUE)
+grep("o?", animals, value=TRUE)
+grep("o+", animals, value=TRUE)
+grep("oo", animals, value=TRUE)
+grep("o[^o]", animals, value=TRUE)
+grep("(a|e|i|o|u)(a|e|i|o|u)", animals, value=TRUE)
+grep("[^aeiou][^aeiou][^aeiou]", animals, value=TRUE)
+grep("^...$", animals, value=TRUE)
+grep("^....$", animals, value=TRUE)
+```
+
+```{r}
+files <- c('sales1.csv', 'orders.csv', 'sales2.csv',
+           'sales3.csv', 'europe.csv', 'usa.csv', 'mex.csv',
+           'CA.csv', 'FL.csv', 'NY.csv', 'TX.csv',
+           'sales-europe.csv', 'sales-usa.csv', 'sales-mex.csv')
+grep("[0-9]", files, value=TRUE)
+grep("^([^0-9])*$", files, value=TRUE)
+grep("[a-z]", files, value=TRUE)
+grep("[A-Z]", files, value=TRUE)
+grep("-", files, value=TRUE)
+grep("^([^-])*$", files, value=TRUE)
+str_replace(files, 'csv', 'txt')
+str_split(files, pattern='\\.')
+```
+
+```{r}
+split_chars <- function(str) {
+  str_split(str, "")
+}
+split_chars('Go Bears!')
+split_chars('Expecto Patronum')
+reverse_chars <- function(str) {
+   paste(rev(unlist(str_split(str, ""))), collapse='')
+}
+reverse_chars("gattaca")
+reverse_chars("Lumox Maxima")
+```
+
