@@ -1,9 +1,9 @@
-===
+---
 title: Lab 10
 author: Yowsean Li
 date: 11/2/2017
 output: html_document
-===
+---
 
 This is the first line
 A 2nd line
