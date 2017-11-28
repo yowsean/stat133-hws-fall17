@@ -12,7 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ### Introduction
 
-In class, we were introduced to XML (eXtensible Markup Language), a format that makes it possible to store and share data while retaining its structure and key information such as labels for data values. There are many other types of formats that can achieve a similar function to XML, including JSON (JavaScript Object Notation) and YAML (YAML Ain't Markup Language). JSON has become increasingly popular in recent years for storing data objects and is often used instead of XML. YAML is not as commonly used for data storage, but is also capable of replacing the functionality of XML in many cases. In the real world, XML and JSON will likely be the most common formats data is stored for interchange, or transfering.
+In class, we were introduced to XML (eXtensible Markup Language), a format that makes it possible to store and share data while retaining its structure and key information such as labels for data values. There are many other types of formats that can achieve a similar function to XML, including JSON (JavaScript Object Notation) and YAML (YAML Ain't Markup Language). JSON has become increasingly popular in recent years for storing data objects and is often used instead of XML. YAML is not as commonly used for data storage, but is also capable of replacing the functionality of XML in many cases. In the real world, XML and JSON are the most common formats data is stored for interchanging, or transfering.
 
 In this post, I will go over the differences between the three different formats and the unique properties that make them more preferable to use in certain situations. In addition, I will give a brief overview of how to manipulate and import these formats into usable data in R.
 
@@ -55,7 +55,7 @@ While JSON and YAML have significant advantages over XML in terms of conciseness
 
 ### Examples
 
-In this portion of the post, I will go over how to deal with JSON and YAML data in R through some examples. For JSON, we will use the jsonlite library and for YAML we will use the yaml library.
+In this portion of the post, I will go over how to deal with JSON and YAML data in R through some examples. For JSON, we will use the `jsonlite` library and for YAML we will use the `yaml` library.
 
 ```{r}
 # Import libraries
@@ -63,11 +63,85 @@ library(jsonlite)
 library(yaml)
 ```
 
-```{r}
+First, we will take an existing dataframe from R, `mtcars`, and convert it into a JSON format with the `toJSON` function.
 
+```{r}
+# Take first 5 entries from mtcars
+mtcars <- head(mtcars)
+mtcars
+
+# Convert dataframe to JSON
+mtcars_JSON <- toJSON(mtcars)
+mtcars_JSON
 ```
 
+We can make this a more readable format by setting the `pretty` attribute to `TRUE`.
+
+```{r}
+# mtcars in readable JSON format
+mtcars_JSON <- toJSON(mtcars, pretty=TRUE)
+mtcars_JSON
+```
+
+We can write this JSON object into a JSON file with the `write_json` function.
+
+```{r}
+write_json(mtcars_JSON, "mtcars.json")
+```
+
+JSON objects can also be converted to R dataframes which is more convenient to use in this environment. We can take the JSON file we just saved and convert it to a dataframe with the `fromJSON` function.
+```{r}
+# Read JSON file
+mtcars2_JSON <- read_json("mtcars.json", simplifyVector = TRUE)
+mtcars2_JSON
+
+# Convert to dataframe
+mtcars2 <- fromJSON(mtcars2_JSON)
+mtcars2
+```
+
+Using the `yaml` library, we can execute the same methods for YAML files.
+
+First, convert the existing R dataframe `iris` to a YAML format using the `as.yaml` function.
+
+```{r}
+# Subset first 5 entries
+iris <- head(iris)
+iris
+
+# Convert to yaml
+iris_yml <- as.yaml(iris, column.major = FALSE)
+iris_yml
+```
+
+We can write the new YAML object to a file with the following code.
+
+```{r}
+writeLines(iris_yml, "iris.yaml")
+```
+
+Now we can read the saved YAML file back into R and convert it back to a dataframe with the `yaml.load` function.
+
+```{r}
+# Import yaml as list
+iris2_yml <- yaml.load_file("iris.yaml")
+iris2_yml
+```
+
+The `yaml` library loads the file as a named list so we have to use `ldply` from the `plyr` package to convert that to a dataframe.
+
+```{r}
+library(plyr)
+# Convert to dataframe
+iris2 <- ldply(iris2_yml, data.frame, stringsAsFactors=FALSE)
+iris2
+```
+
+By importing these files into R as dataframes, you can manipulate the data the same way you would with any other dataframe in R.
+
 ### Conclusion
+
+XML, JSON, and YAML files are all formats that statisticians may encounter when retrieving or scraping data from an external source. Each type has different benefits over the others. When choosing which type of format to use, it is important to keep in mind what features you need and what your priorities are. Generally speaking, XML and JSON are the two primary options to choose from. If you prioritize simplicity, JSON will probably be the better option. However, if you need additional features, such as storing metadata or data querying, XML may be more effective.
 
 ### References
 
