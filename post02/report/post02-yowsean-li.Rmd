@@ -1,0 +1,87 @@
+---
+title: "post02-yowsean-li"
+author: "Yowsean Li"
+date: "11/27/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+# Alternatives to XML for Data Serialization
+
+### Introduction
+
+In class, we were introduced to XML (eXtensible Markup Language), a format that makes it possible to store and share data while retaining its structure and key information such as labels for data values. There are many other types of formats that can achieve a similar function to XML, including JSON (JavaScript Object Notation) and YAML (YAML Ain't Markup Language). JSON has become increasingly popular in recent years for storing data objects and is often used instead of XML. YAML is not as commonly used for data storage, but is also capable of replacing the functionality of XML in many cases. In the real world, XML and JSON will likely be the most common formats data is stored for interchange, or transfering.
+
+In this post, I will go over the differences between the three different formats and the unique properties that make them more preferable to use in certain situations. In addition, I will give a brief overview of how to manipulate and import these formats into usable data in R.
+
+### Motivation and Background
+
+The motivation to explore this topic for this post came from the complex form of the XML format. I wanted to find other formats that were simpler, but also could get the job done. This led me to the JSON and YAML formats which both have a more minimal approach and have their advantages to XML, but lack some features.
+
+### Discussion
+
+In this section, we'll introduce the JSON and YAML formats and discuss the advantages of each.
+
+##### JSON and its advantages
+The general format of JSON is with two main structures -- key-value pairs and lists. Braces surround key-value pairs to form objects. Square brackets denote lists, where entries are separated by commas. Values can be strings, numbers, boolean values, objects, or arrays. Objects can also be nested in other objects, allowing for a hierarchical structure.
+
+The diagrams below demonstrate the basic idea of JSON syntax.
+
+![Object](https://www.json.org/object.gif "Object")
+
+![Array](https://www.json.org/array.gif "Array")
+
+The following image shows an example of a nested JSON structure.
+
+![JSON structure](https://courses.cs.washington.edu/courses/cse333/12sp/assignments/hw2/json_tree.png)
+
+The syntax between JSON and XML is vastly different. Compared to JSON, XML is more verbose as it requires tags before and after the data entry which results in a lot of unnecessary text and memory, especially in large datasets. The object and array notation is also unique to JSON, allowing the user to easily see these structures. It is definitely possible to have these structures in XML as well, but it is not as easy to read for the user.
+
+The visual below shows how JSON is more concise than XML. On the left, the JSON format has a label paired with each entry and braces surrounding each object. On the right, we see that the XML format has each label twice, surrounding the entries.
+
+![JSON and XML](http://cdn2.hubspot.net/hub/126065/file-239461408-png/images/jsonxmlresults.png "JSON and XML")
+
+##### YAML and its advantages
+YAML has a similar format to JSON, but replaces the braces and brackets with indentation. Essentially, the level of indentation indicates the hierarchy of the data. Below is a comparison between JSON and YAML formats. We can see that they are very similar. The main differences lie in the functionality of the two formats.
+
+![YAML and JSON](http://www.bogotobogo.com/python/images/python_yaml/yml_to_json.png "YAML and JSON")
+
+YAML supports many capabilities not permitted in JSON, such as self referencing, complex data types, and comments. While YAML has more features than JSON, it is not commonly used for data storage as its features are not particularly useful in that field. It is a popular format for configuration files, however. Furthermore, YAML is more complicated to use and does not have as much support as JSON or XML.
+
+##### Advantages of XML
+While JSON and YAML have significant advantages over XML in terms of conciseness and readability, XML still has its advantages in certain situations. The use of tags, for instance, allows for metadata to be stored with the data, something that JSON and YAML cannot do efficiently. It is also simpler to query specific data entries from XML without iterating through the file using XPath. All of these data types have slightly different purposes although their abilities may overlap. XML works best for document markup, JSON for structured data interchange, and YAML for specific cases where its features may be needed. 
+
+### Examples
+
+In this portion of the post, I will go over how to deal with JSON and YAML data in R through some examples. For JSON, we will use the jsonlite library and for YAML we will use the yaml library.
+
+```{r}
+# Import libraries
+library(jsonlite)
+library(yaml)
+```
+
+```{r}
+
+```
+
+### Conclusion
+
+### References
+
+- https://www.w3schools.com/js/js_json_intro.asp
+
+- http://www.json.org/xml.html
+
+- https://cran.r-project.org/web/packages/jsonlite/jsonlite.pdf
+
+- http://www.simonstl.com/articles/whyxml.htm
+
+- http://zevross.com/blog/2015/02/12/using-r-to-download-and-parse-json-an-example-using-data-from-an-open-data-portal/
+
+- https://www.r-bloggers.com/better-handling-of-json-data-in-r/
+
+- https://cran.r-project.org/web/packages/yaml/yaml.pdf
+
