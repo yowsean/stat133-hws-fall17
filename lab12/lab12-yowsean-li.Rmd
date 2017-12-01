@@ -1,0 +1,112 @@
+---
+title: "lab13-yowsean-li"
+author: "Yowsean Li"
+date: "11/30/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(XML)
+library(xml2)
+library(rvest)
+library(magrittr)ins
+```
+
+```{r}
+# Assemble url (so it fits on screen)
+basket <- "https://www.basketball-reference.com"
+gsw <- "/teams/GSW/2017.html"
+gsw_url <- paste0(basket, gsw)
+
+# download HTML file to your working directory
+download.file(gsw_url, 'gsw-roster-2017.html')
+
+# Read GSW Roster html table
+gsw_roster <- readHTMLTable('gsw-roster-2017.html')
+```
+```{r}
+nba_html <- paste0(basket, "/leagues/NBA_2017.html")
+
+xml_doc <- read_html(nba_html)
+```
+
+```{r}
+# content of h2 nodes
+xml_doc %>%
+  html_nodes("h2") %>%
+  html_text() 
+```
+
+```{r}
+# content of h1 nodes
+xml_doc %>%
+  html_nodes("h1") %>%
+  html_text() 
+```
+
+```{r}
+# content of strong nodes
+xml_doc %>%
+  html_nodes("strong") %>%
+  html_text() 
+```
+
+```{r}
+# content of button nodes
+xml_doc %>%
+  html_nodes("button") %>%
+  html_text() 
+```
+
+```{r}
+# node with an attribute
+xml_doc %>%
+  html_nodes("p.listhead") %>%
+  html_text()
+```
+
+```{r}
+xml_doc %>%
+  html_nodes(xpath = '//p[@class="listhead"]') %>%
+  html_text()
+```
+
+```{r}
+xml_doc %>%
+  html_nodes(xpath = '//ul[@class=""]/li/a') %>%
+  html_text()
+```
+
+```{r}
+# extracting first table 
+xml_table1 <- xml_doc %>%
+  html_nodes("table") %>%
+  extract(1)
+
+class(xml_table1)
+```
+
+```{r}
+tbl1 <- html_table(xml_table1)
+
+head(tbl1)
+```
+
+```{r}
+# two html tables
+xml_tables <- xml_doc %>%
+  html_nodes("table") %>%
+  extract(1:2)
+```
+
+```{r}
+# extract names of teams
+xml_tables %>% 
+  html_nodes("a") %>%
+  html_text()
+```
+
